@@ -1,0 +1,52 @@
+<!-- views/pages/createblog.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>evBytes</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="https://cdn.ckeditor.com/ckeditor5/10.0.1/classic/ckeditor.js"></script>
+    <style>
+    /*body    { padding-top:50px; }*/
+    </style>
+</head>
+<body class="container">
+
+<header>
+    <% include ../partials/header %>
+</header>
+
+<main>
+        <form method="post" action="/createblog">
+            <textarea name="editor" id="editor">
+                <p>Create your blog here...</p>
+            </textarea>
+            <p>
+                <input type="submit" value="Submit">
+            </p>
+            <!--<button type="submit" class="btn btn-default">Submit</button>-->
+            <script>
+                ClassicEditor
+                    .create( document.querySelector( '#editor' ), {
+                        cloudServices: {
+                            tokenUrl: 'https://33565.cke-cs.com/token/dev/fMMgBfN3d8xfoIVvMjd8QtO2g41UTNpaxJnu3WrdzOS8XsEiB9caDnfXSzOd',
+                            uploadUrl: 'https://33565.cke-cs.com/easyimage/upload/'
+                        }
+                    })
+                    .then( editor => {
+                        console.log(editor);
+                    } )
+                    .catch( err => {
+                        console.error( err.stack );
+                    } );
+                ClassicEditor.replace( 'editor' );
+            </script>
+        </form>
+</main>
+
+<footer>
+    <% include ../partials/footer %>
+</footer>
+
+</body>
+</html>
