@@ -18,15 +18,28 @@
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^10.0.1",
     "@ckeditor/ckeditor5-easy-image": "^10.0.0",
+    "@sendgrid/mail": "^6.3.1",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "cookie-session": "^2.0.0-beta.3",
     "country-list": "^1.1.0",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
+    "express-validator": "^5.2.0",
     "jsdom": "^11.11.0",
     "mongodb": "^3.0.10",
     "mongoose": "^5.1.5",
     "newsapi": "^2.2.2",
     "newspaperjs": "^1.0.6",
-    "reading-time": "^1.1.2"
+    "passport": "^0.4.0",
+    "passport-facebook": "^2.1.1",
+    "passport-google-oauth": "^1.0.0",
+    "passport-local": "^1.0.0",
+    "passport-twitter": "^1.0.4",
+    "randomstring": "^1.1.5",
+    "reading-time": "^1.1.2",
+    "sendgrid": "^5.2.3"
   }
 }

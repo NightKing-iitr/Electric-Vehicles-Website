@@ -11,6 +11,26 @@
                 <li><a href="/">Home</a></li>
                 <li><a href="/newsfeed">Newsfeed</a></li>
                 <li><a href="/createBlog">Create Blog</a></li>
+                <% if(user) { %>
+                    <!--create profile thumbnail of user-->
+                    <li>
+                        <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                <img src="<%=user.thumbnail%>" alt="Avatar" class="avatar" style="vertical-align: middle;
+                                border-radius: 50%;width: 40px;height: 40px">
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Become a contributor</a></li>
+                            <li><a href="#">Become a moderator</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Profile</a></li>
+                            <li><a href="/auth/logout">Logout</a></li>
+                        </ul>
+                        </div>
+                    </li>
+                <%} else {%>
+                    <li><a href="/auth/login">Login</a></li>
+                <%} %>
             </ul>
         </div>
     

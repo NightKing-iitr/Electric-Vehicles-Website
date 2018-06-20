@@ -12,6 +12,15 @@ var Blog = require('../models/blog');
 
 var db = mongoose.connection;
 
+//middleware for auth check
+const authCheck = (req, res, next) => {
+    if(!req.user){
+        res.redirect('/auth/login');
+    } else {
+        next();
+    }
+};
+
 //retrieving blog
 router.get('/', function(req, res, next){
     var blogArray = [];
@@ -30,7 +39,7 @@ router.get('/', function(req, res, next){
 		}
 	}, function() {
 		blogArray = blogArray.reverse();
-		res.render('pages/home', {blogarray: blogArray});
+		res.render('pages/home', {user: req.user, blogarray: blogArray});
 	});
 });
 
@@ -51,8 +60,8 @@ router.get('/view/:id',function(req, res, next){
     });
 });
 
-router.get('/createblog', function(req, res) {
-    res.render('pages/createblog');
+router.get('/createblog', authCheck ,function(req, res) {
+    res.render('pages/createblog',{user: req.user});
 });
 
 //create blog

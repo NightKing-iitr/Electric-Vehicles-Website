@@ -1,11 +1,13 @@
 const NewsAPI = require('newsapi');
-const newsapi = new NewsAPI('5c844fe332f34b5c9da5159c9b8a544a');
+const keys = require('../config/keys');
+const newsapi = new NewsAPI(keys.newsapi.key);
 const express = require('express');
 const router = express.Router();
 var countries = require('country-list')();
 const Article = require('newspaperjs').Article;
 
 var SourceArray = [];
+var sortBy;
 var url="localhost:7000/newsfeed";
 
 var countryName = ["Argentina", "Australia", "Austria",
@@ -126,23 +128,33 @@ newsapi.v2.everything({
 
 
 router.get('/', function(req, res, next){
+    console.log('Get home newsfeed!');
     url = url + '/';
     newsapi.v2.everything({
         q: 'electric-vehicles',
         language: 'en',
         sortBy: 'publishedAt',
+        pageSize: 100,
         page: 1
     }).then(function(response, error){
         if(error) {
             res.send('Error found!');
         }
         else {
+            //console.log(response.articles.length);
+            var currPage  = 1;
+            console.log('page no. = ' + req.query.page);
+            if (typeof req.query.page !== 'undefined') {
+                currPage = req.query.page;
+            }
+            console.log('currpage: ' + currPage);
             var newsArray = [];
-            for(i=0; i<10; i++){
+            for(i=(currPage-1)*10; i<(currPage*10); i++){
                 newsArray.push(response.articles[i]);
             }
-            res.render('pages/newsfeed', {newsArray: newsArray,
-                 sourceArray: SourceArray, countryArray: CountryArray, keywordsArray: keywordsArray, url: url});
+            res.render('pages/newsfeed', {user: req.user, newsArray: newsArray,
+                 sourceArray: SourceArray, countryArray: CountryArray, keywordsArray: keywordsArray,
+                  url: url, sortBy: sortBy});
         }
     });
 });
@@ -170,42 +182,59 @@ router.post('/', function(req, res, next){
                 newsArray.push(response.articles[i]);
             }
             res.render('pages/newsfeed', {newsArray: newsArray,
-                sourceArray: SourceArray, countryArray: CountryArray, keywordsArray: keywordsArray});
+                sourceArray: SourceArray, countryArray: CountryArray, keywordsArray: keywordsArray,
+                sortBy: sortBy});
         }
     });
 });
 
-router.post('/sortBy', function(req, res, next){
-    console.log(req.body);
-    var sortBy = req.body.sortBy;
+router.get('/sortBy', function(req, res, next){
+    console.log('Sort function implemented!');
+    //console.log(req.body);
+    //console.log(req.query);
+    sortBy = req.query.sortBy;
+    console.log('sortBy: ' + sortBy);
+    console.log('pageno.: ' + req.query.page);
     newsapi.v2.everything({
         q: 'electric-vehicles',
         language: 'en',
         sortBy: sortBy,
+        pageSize: 100,
         page: 1
     }).then(function(response, error){
         if(error) {
             res.send('Error found!');
         }
         else {
+            console.log(response.articles.length);
+            var currPage  = 1;
+            //console.log(req.query.page);
+            if (typeof req.query.page !== 'undefined') {
+                currPage = req.query.page;
+            }
             var newsArray = [];
-            for(i=0; i<10; i++){
+            for(i=(currPage-1)*10; i<(currPage*10); i++){
                 newsArray.push(response.articles[i]);
             }
             res.render('pages/newsfeed', {newsArray: newsArray,
-                sourceArray: SourceArray, countryArray: CountryArray, keywordsArray: keywordsArray});
+                sourceArray: SourceArray, countryArray: CountryArray,
+                 keywordsArray: keywordsArray, sortBy: sortBy});
         }
     });
 });
 
-router.post('/source', function(req, res, next){
-    console.log(req.body.source);
-    var sourceName = req.body.source;
+router.get('/source', function(req, res, next){
+    console.log('Source is selected!');
+    //console.log(req.body.source);
+    var sourceName = req.query.source;
+    console.log('source: ' + sourceName);
+    console.log('pageno.: ' + req.query.page);
     newsapi.v2.everything({
         q: 'electric-vehicles',
         sources: sourceName,
         language: 'en',
         sortBy: 'publishedAt',
+        pageSize: 100,
         page: 1
     }).then(function(response, error){
         if(error) {
@@ -216,16 +245,15 @@ router.post('/source', function(req, res, next){
                 res.send('No relevant news found!');
             }
             else{
+     
                 var newsArray = [];
-                var count = 10;
-                if(count > response.totalResults) {
-                    count = response.totalResults;
-                }
-                for(i=0; i<count; i++){
-                    newsArray.push(response.articles[i]);
+                var currPage = 1;
+                if (typeof req.query.page !== 'undefined') {
+                    currPage = req.query.page;
                 }
             res.render('pages/newsfeed', {newsArray: newsArray,
-                sourceArray: SourceArray, countryArray: CountryArray, keywordsArray: keywordsArray});
+                sourceArray: SourceArray, countryArray: CountryArray, keywordsArray: keywordsArray,
+                sortBy: sortBy});
             }
         }
     });
@@ -255,7 +283,8 @@ router.post('/country', function(req, res, next){
                     }
                 }
             res.render('pages/newsfeed', {newsArray: newsArray,
-                sourceArray: SourceArray, countryArray: CountryArray, keywordsArray: keywordsArray});
+                sourceArray: SourceArray, countryArray: CountryArray, keywordsArray: keywordsArray,
+                sortBy: sortBy});
             }
         }
     });
@@ -286,15 +315,11 @@ router.get('/:keyword', function(req, res, next){
                     }
                 }
             res.render('pages/newsfeed', {newsArray: newsArray,
-                sourceArray: SourceArray, countryArray: CountryArray, keywordsArray: keywordsArray});
+                sourceArray: SourceArray, countryArray: CountryArray, keywordsArray: keywordsArray,
+                sortBy: sortBy});
             }
         }
     });
-});
-
-router.get('/page/:pagenum', function(req, res, next){
-    console.log(req.params);
-    res.send('Working page!');
 });
 
 module.exports = router;
