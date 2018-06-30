@@ -85,3 +85,25 @@ body {
 footer{
   margin-top:40px;
 }
+.post-block {
+  position: relative;
+  margin-top: 1em;
+  margin-bottom: 1.425em;
+  padding-top: 1.425em;
+  border-top: 2px solid #f1f1f1;
+  clear: both;
+  /*display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;*/
+  display: flex;
+  /*-webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;*/
+  flex-wrap: wrap;
+  -webkit-box-pack: justify;
+  /*-webkit-justify-content: space-between;
+  -ms-flex-pack: justify;*/
+  justify-content: space-between;
+  /*-webkit-transition: all .2s ease .1s;*/
+  transition: all .2s ease .1s;
+  opacity: 1;
+}

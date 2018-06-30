@@ -33,6 +33,7 @@
     "mongoose": "^5.1.5",
     "newsapi": "^2.2.2",
     "newspaperjs": "^1.0.6",
+    "nodemon": "^1.17.5",
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",
     "passport-google-oauth": "^1.0.0",

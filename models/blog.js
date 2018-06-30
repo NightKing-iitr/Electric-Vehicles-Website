@@ -4,6 +4,12 @@ const blogSchema = mongoose.Schema({
     heading: {
         type: String
     },
+    imageurl: {
+        type: String
+    },
+    description: {
+        type: String
+    },
     htmlDoc: {
         type: String
     },
@@ -12,7 +18,8 @@ const blogSchema = mongoose.Schema({
         default: Date.now
     },
     author: {
-        type: String
+        Id : {type: String},
+        name: {type: String}
     },
     minuteread: {
         type: String

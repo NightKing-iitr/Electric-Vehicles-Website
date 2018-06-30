@@ -1,38 +1,104 @@
-<nav class="navbar navbar-default" role="navigation">
+<nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
-    
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarNav" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
                 <span class="glyphicon glyphicon glyphicon-tree-deciduous"></span>
                 evBytes
             </a>
-    
-            <ul class="nav navbar-nav">
-                <li><a href="/">Home</a></li>
-                <li><a href="/newsfeed">Newsfeed</a></li>
-                <li><a href="/createBlog">Create Blog</a></li>
-                <% if(user) { %>
-                    <!--create profile thumbnail of user-->
-                    <li>
-                        <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                                <img src="<%=user.thumbnail%>" alt="Avatar" class="avatar" style="vertical-align: middle;
-                                border-radius: 50%;width: 40px;height: 40px">
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Become a contributor</a></li>
-                            <li><a href="#">Become a moderator</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">Profile</a></li>
-                            <li><a href="/auth/logout">Logout</a></li>
-                        </ul>
-                        </div>
-                    </li>
-                <%} else {%>
-                    <li><a href="/auth/login">Login</a></li>
-                <%} %>
-            </ul>
         </div>
-    
-    </div>
+            <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="nav navbar-nav">
+                <li><a  href="/">Home</a></li>
+                <li><a  href="/newsfeed">Newsfeed</a></li>
+                <li><a  href="/createBlog">Create Blog</a></li>
+                <li><a href="#" id="sideNav">More...</a></li>
+                <script>
+                $(document).ready(function(){
+                    var sidenavOpen = false;
+                    $('#sideNav').click(function(){
+                       if(!sidenavOpen){
+                           $("#mysideNav").css({"width":"250px"});
+                       }else{
+                        $("#mysideNav").css({"width":"0"});
+                       }
+                       sidenavOpen = !sidenavOpen;    
+                    });                    
+                });
+                </script>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                    <% if(user) { %>
+                        <li><a href="/bookmarks">Bookmarks</a></li></a>
+                        <!--create profile thumbnail of user-->
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <%=user.username%>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/auth/contributor">Become a contributor</a></li>
+                                <li><a href="#">Become a moderator</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Profile</a></li>
+                                <li><a href="/auth/logout">Logout</a></li>
+                            </ul>
+                        </li>
+                    <%} else {%>
+                        <li><a href="#" id="login_button">Login</a></li>
+                        <script>
+                            $(function() {
+                            $('#login_button').click(function() {
+                                $('#login_form').toggle()
+                            });        
+                        }); 
+                        </script>
+                    <%} %>
+            </ul>
+            </div>
+    </div>    
 </nav>
+<div class="login-form" id="login_form"  style="display: none;">
+        <form action="/auth/login" method="post">
+            <h2 class="text-center">Sign in</h2>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                    <input type="email" class="form-control" name="email" placeholder="Email" required="required">				
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                    <input type="password" class="form-control" name="password" placeholder="Password" required="required">				
+                </div>
+            </div>        
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary login-btn btn-block">Sign in</button>
+            </div>
+            <div class="clearfix">
+                <label class="pull-left checkbox-inline"><input type="checkbox"> Remember me</label>
+                <a href="/auth/forgotpass" class="pull-right">Forgot Password?</a>
+            </div>
+            <div class="or-seperator"><i>or</i></div>
+            <p class="text-center">Login with your social media account</p>
+            <div class="text-center social-btn">
+                <a href="/auth/facebook" class="btn btn-primary"><i class="fa fa-facebook"></i>&nbsp; Facebook</a>
+                <a href="/auth/twitter" class="btn btn-info"><i class="fa fa-twitter"></i>&nbsp; Twitter</a>
+                <a href="/auth/google" class="btn btn-danger"><i class="fa fa-google"></i>&nbsp; Google</a>
+            </div>
+        </form>
+        <p class="text-center text-muted small">Don't have an account? <a href="/auth/register">Sign up here!</a></p>
+</div>
+<div id="mysideNav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#">Compare EV's</a>
+        <a href="#">Calculator</a>
+        <a href="#">Latest Release</a>
+        <a href="#">Pollution Report</a>
+        <a href="#">Trending EV's</a>
+</div>

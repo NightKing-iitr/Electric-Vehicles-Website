@@ -8,10 +8,12 @@
     <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 
-    <!-- Custom styles for this template -->
-    <link href="../../public/css/clean-blog.min.css" rel="stylesheet">
+    <style>
+        button:focus {outline: none;}
+        .svgIcon {fill: rgba(0,0,0,.54);}
+    </style>
 </head>
-<body class="container">
+<body class="container-fluid" style="padding: 0px;">
 
 <header>
     <% include ../partials/header %>
@@ -21,30 +23,220 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
+                <div id="blogContainer">
                 <% blogarray.forEach(function(blog) { %>
-                    <div class="post-preview">
-                        <a href="view/<%=  blog.id %>">
-                          <h2 class="post-title">
-                            <%= blog.heading %>
-                          </h2>
-                          <!--<h3 class="post-subtitle">
-                            Problems look mighty small from 150 miles up
-                          </h3>-->
-                        </a>
-                        <p class="post-meta">Posted by
-                          <a href="#"><%=blog.author%></a>
-                          on <%=blog.createdAt%> </p>
-                          <p class="post-meta"><%=blog.minuteread%></p>
-                      </div>
-                      <hr>
+                    <article class="post-block">
+                        <div class="post-block__header" style="margin-right: 5px;">
+                            <h2 class="post-block__title" style="font-size: 26px;">
+                                <a class="post-block__title__link" href="/view/<%= blog.id %>"><%= blog.heading %></a>
+                            </h2>
+                            <div class="post-block__meta">
+                            <div class="river-byline">
+                                <time class="river-byline__time" datetime="<%=blog.createdAt%>"><%=blog.createdAt%></time>
+                                <span class="river-byline__authors"><span><a aria-label="Posts by <%=blog.author.name%>" href="/author/<%=blog.author.id%>/"><%=blog.author.name%></a></span></span>
+                            </div>
+                            <div style="margin-top: 5px;">
+                                <div style="float: left;">
+                                    <p id="minuteread"><%=blog.minuteread%></p>
+                                </div>
+                                <div style="float: left;">
+                                        <% if(user) {%>
+                                            <button class="bookmark-btn" id="bkmrk-<%=blog.id%>" onclick="SwitchButtons('bkmrk-<%=blog.id%>');"  style="display: inline-block; margin-left: 8px; border: none; background: none;"> 
+                                            <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
+                                            <path class="bkmrk" d="M19 6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v14.66h.01c.01.1.05.2.12.28a.5.5 0 0 0 .7.03l5.67-4.12 5.66 4.13a.5.5 0 0 0 .71-.03.5.5 0 0 0 .12-.29H19V6zm-6.84 9.97L7 19.64V6a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v13.64l-5.16-3.67a.49.49 0 0 0-.68 0z" fill-rule="evenodd"></path>
+                                            </svg>
+                                            </button>
+                                            <button class="remove-btn" id="rmv-<%=blog.id%>" onclick="SwitchButtons('rmv-<%=blog.id%>');" style="margin-left: 8px;
+                                            background-color: transparent; border-color: transparent; outline: 0; display: none;"> 
+                                            <svg class="svgIcon" width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
+                                            <path class="rmv" d="M19 6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v14.66h.01c.01.1.05.2.12.28a.5.5 0 0 0 .7.03l5.67-4.12 5.66 4.13a.5.5 0 0 0 .71-.03.5.5 0 0 0 .12-.29H19V6zm-6.84 9.97L7 19.64V6a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v13.64l-5.16-3.67a.49.49 0 0 0-.68 0z" fill-rule="evenodd"></path>
+                                            </svg>
+                                            </button>
+                                        <%}%>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="post-block__content" style="margin-left: 5px; margin-right: 5px;">
+                            <p style="height: 160px; overflow: hidden;"><%=blog.description%></p>
+                        </div>
+	                    <div class="post-block__footer" style="margin-left: 5px;">
+                            <figure class="post-block__media">
+                                <picture><img alt="" src="<%=blog.imageurl%>" height="124px" width="234px;"></picture>                                                                                                                       
+                            </figure>
+                        </div>
+                    </article>
                 <% }); %>
-                <div class="clearfix">
-                    <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
                 </div>
+                <div class="clearfix">
+                    <a class="btn btn-primary float-right" href="#" id="myBlogs">See More Posts &rarr;</a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-2 mx-auto" style="float: right; padding-right: 0px;">
+            <div class="quotes" style="margin-top: 10px;">
+                <blockquote id="myQuote" style="display: block;">Invention is not enough. Tesla invented the electric power we use, but he struggled to get it out to people. You have to combine both things: invention and innovation focus, plus the company that can commercialize things and get them to people.
+                <footer style="display: block; margin-top: 5px;">"Larry Page"</footer></blockquote>
+                <div class="bar">
+                    <div class="in"></div>
+                    <style>
+                        .quotes {
+                            border-bottom: 1px solid #f4f4f4;
+                            z-index: 0;
+                        }
+                        .bar {
+                            height: 1px;
+                            width: 100%;
+                        }
+                        .in {
+                            animation: fill 10000ms linear infinite;
+                            height: 100%;
+                            background-color: #47a3da;
+                            z-index: 1000;
+                        }
+                        @keyframes fill {
+                            0% {
+                                width: 0%;
+                            }
+                            100% {
+                                width: 100%;
+                            }
+                        }
+                    </style>
+                </div>
+            </div>
+            <div>
+                <h2>Popular News</h2>
+                <div class="list-news">
+                    <%for(i=0; i<5; i++){%>
+                    <article class="popular-block">
+                        <div style="margin-top: 15px; margin-bottom: 15px;">
+                            <a href="https://insideevs.com/2019-jaguar-i-pace-first-drive-review/">
+                            <img src="https://insideevs.com/wp-content/uploads/2018/06/2019-jaguar-i-pace-first-drive-1-90x80.jpg" alt="Not found!!!">
+                            </a>
+                        </div>
+                        <div style="margin-top: 15px; margin-bottom: 15px;">
+                            <h3 style="font-size: 16px; font-weight: 600; color: #000; margin-top: 0px; margin-bottom: 0px;">
+                                <a class="title" href="https://insideevs.com/2019-jaguar-i-pace-first-drive-review/" style="color: black;"></a>2019 Jaguar I-Pace First Drive: A Force To Be Reckoned With</a></h3>
+                        </div>
+                    </article>
+                    <%}%>
+                </div>
+            </div>
             </div>
         </div>
     </div>
 </main>
+
+<script>
+    function SwitchButtons(buttonId) {
+            var hideBtn, showBtn, blogId;
+            if (buttonId[0] == 'b') {
+                blogId = buttonId.slice(6);
+                showBtn = 'rmv-' + blogId;
+                hideBtn = 'bkmrk-' + blogId;
+                var parameters = {blogId: blogId, save: true};
+                $.get( '/saveblog', parameters, function(data) {
+                    console.log("Send blog id...");
+                });
+                
+            } else {
+                blogId = buttonId.slice(4);
+                showBtn = 'bkmrk-' + blogId;
+                hideBtn = 'rmv-' + blogId;
+                var parameters = {blogId: blogId, save: false};
+                $.get( '/removeblog', parameters, function(data) {
+                    console.log("Remove blog id...");
+                });
+            }
+            //console.log(blogId);
+            document.getElementById(hideBtn).style.display = 'none'; 
+            document.getElementById(showBtn).style.display = ''; 
+        }
+    $(document).ready(function() {
+        setInterval(function(){ 
+    //fetch quotes after 20 sec
+    const  quote =  document.getElementById('myQuote');
+    let url = "http://localhost:7000/quotes";
+    fetch(url)
+        .then(function (data) {
+            return data.json();
+        }).then(function (doc){
+            var quotes = doc;
+            quote.innerHTML = quotes.body + `<footer style="display: block; margin-top: 5px;">"` + quotes.author + `"</footer>`;
+            //author.innerHTML = '<span>"</span>' ;
+        })
+        .catch(function (error){
+            if(error) throw error;
+        });
+    }, 10000);
+    
+        var page = 1; 
+        //let blog = <%-blogarray%>;
+        //console.log(blog);
+        $("#myBlogs").click(function() {
+            page = page + 1;
+            let url = "http://localhost:7000/blogs/?pagenum=" + page;
+            fetch(url)
+                .then(function (data){
+                    return data.json();
+                }).then(function (doc){
+                    if(!doc.length){
+                        $("#myBlogs").css("display", "none");
+                    }else{
+                        for(i in doc){
+                        var tm = new Date(doc[i].createdAt);
+                        $('#blogContainer').append(`<article class="post-block">
+                        <div class="post-block__header" style="margin-right: 5px;">
+                            <h2 class="post-block__title" style="font-size: 26px;">
+                                <a class="post-block__title__link" href="/view/` +  doc[i].id + `">` +  doc[i].heading + `</a>
+                            </h2>
+                            <div class="post-block__meta">
+                            <div class="river-byline">
+                                <time class="river-byline__time" datetime="` + doc[i].createdAt + `">` + tm + `</time>
+                                <span class="river-byline__authors"><span><a aria-label="Posts by ` + doc[i].author.name + `" href="/author/` + doc[i].author.id + `/">` + doc[i].author.name + `</a></span></span>
+                            </div>
+                            <div style="margin-top: 5px;">
+                                <div style="float: left;">
+                                    <p id="minuteread">` + doc[i].minuteread + `</p>
+                                </div>
+                                <div style="float: left;">
+                                        <% if(user) {%>
+                                            <button class="bookmark-btn" id="bkmrk-` + doc[i].id + `" onclick="SwitchButtons('bkmrk-` + doc[i].id + `');"  style="display: inline-block; margin-left: 8px; border: none; background: none;"> 
+                                            <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
+                                            <path class="bkmrk" d="M19 6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v14.66h.01c.01.1.05.2.12.28a.5.5 0 0 0 .7.03l5.67-4.12 5.66 4.13a.5.5 0 0 0 .71-.03.5.5 0 0 0 .12-.29H19V6zm-6.84 9.97L7 19.64V6a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v13.64l-5.16-3.67a.49.49 0 0 0-.68 0z" fill-rule="evenodd"></path>
+                                            </svg>
+                                            </button>
+                                            <button class="remove-btn" id="rmv-` + doc[i].id + `" onclick="SwitchButtons('rmv-` + doc[i].id + `');" style="margin-left: 8px;
+                                            background-color: transparent; border-color: transparent; outline: 0; display: none;"> 
+                                            <svg class="svgIcon" width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
+                                            <path class="rmv" d="M19 6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v14.66h.01c.01.1.05.2.12.28a.5.5 0 0 0 .7.03l5.67-4.12 5.66 4.13a.5.5 0 0 0 .71-.03.5.5 0 0 0 .12-.29H19V6zm-6.84 9.97L7 19.64V6a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v13.64l-5.16-3.67a.49.49 0 0 0-.68 0z" fill-rule="evenodd"></path>
+                                            </svg>
+                                            </button>
+                                        <%}%>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="post-block__content" style="margin-left: 5px; margin-right: 5px;">
+                            <p style="height: 160px; overflow: hidden;">` + doc[i].description + `</p>
+                        </div>
+	                    <div class="post-block__footer" style="margin-left: 5px;">
+                            <figure class="post-block__media">
+                                <picture><img alt="" src="` + doc[i].imageurl + `" height="124px" width="234px;"></picture>                                                                                                                       
+                            </figure>
+                        </div>
+                    </article>`);
+                    }
+                    }
+                })
+                .catch(function (error){
+                    if(error) throw error;
+            });
+        });
+         
+});
+    
+</script>
 
 <footer>
     <% include ../partials/footer %>

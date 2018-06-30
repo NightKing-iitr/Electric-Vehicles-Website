@@ -1,0 +1,90 @@
+<!-- views/pages/home.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+    <!-- Custom fonts for this template -->
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <style>
+    </style>
+</head>
+<body class="container-fluid" style="padding: 0px;">
+
+<header>
+    <% include ../partials/header %>
+</header>
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <h1>Bookmarks</h1>
+                <div>
+                    <% if(blogArray.length) {%>
+                        <% blogArray.forEach(function(blog) { %>
+                            <article class="post-block">
+                                    <div class="post-block__header" style="margin-right: 5px;">
+                                        <h2 class="post-block__title" style="font-size: 26px;">
+                                            <a class="post-block__title__link" href="/view/<%= blog.id %>"><%= blog.heading %></a>
+                                        </h2>
+                                        <div class="post-block__meta">
+                                            <div class="river-byline">
+                                                <time class="river-byline__time" datetime="<%=blog.createdAt%>"><%=blog.createdAt%></time>
+                                                <span class="river-byline__authors"><span><a aria-label="Posts by <%=blog.author.name%>" href="/author/<%=blog.author.id%>/"><%=blog.author.name%></a></span></span>
+                                            </div>
+                                            <div style="margin-top: 5px;">
+                                                <div style="float: left;">
+                                                    <p id="minuteread"><%=blog.minuteread%></p>
+                                                </div>
+                                                <div style="float: left;">
+                                                    <% if(user) {%>
+                                                    <button class="remove-btn text-muted" id="rmv-<%=blog.id%>"
+                                                        onclick="removeBlog('rmv-<%=blog.id%>');" style="margin-left: 8px;
+                                                        background-color: transparent; border-color: transparent; outline: 0;"> 
+                                                        Remove
+                                                    </button>
+                                                    <%}%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="post-block__content" style="margin-left: 5px; margin-right: 5px;">
+                                        <p style="height: 160px; overflow: hidden;"><%=blog.description%></p>
+                                    </div>
+                                    <div class="post-block__footer" style="margin-left: 5px;">
+                                        <figure class="post-block__media">
+                                            <picture><img alt="" src="<%=blog.imageurl%>" height="124px" width="234px;"></picture>                                                                                                                       
+                                        </figure>
+                                    </div>
+                                </article>
+                        <% }); %>
+                    <%}else {%>
+                        <div class="jumbotron jumbotron-fluid" style="text-align: center; font-size: 50px;">
+                            No Bookmarks to show...
+                        </div>
+                    <%}%>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    $("button").hover(function(){
+        $(this).toggleClass("text-muted");
+    });
+    function removeBlog(buttonId){
+        blogId = buttonId.slice(4);
+        var parameters = {blogId: blogId, save: false};
+        $.get( '/removeblog', parameters, function(data) {
+                //console.log("Remove blog id...");
+                window.location.reload(true);
+                //refresh the page on click
+            });
+    }
+</script>
+<footer>
+    <% include ../partials/footer %>
+</footer>
+</body>
+</html>

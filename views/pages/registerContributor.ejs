@@ -10,7 +10,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
 <style type="text/css">
 	.login-form {
-		width: 385px;
+		width: 600px;
 		margin: 30px auto;
 	}
     .login-form form {        
@@ -31,25 +31,8 @@
     }
     .login-btn {
         font-size: 15px;
-        font-weight: bold;
+        font-weight: bold; 
     }
-	.social-btn .btn {
-		border: none;
-        margin: 10px 3px 0;
-        opacity: 1;
-	}
-    .social-btn .btn:hover {
-        opacity: 0.9;
-    }
-	.social-btn .btn-primary {
-        background: #507cc0;
-    }
-	.social-btn .btn-info {
-		background: #64ccf1;
-	}
-	.social-btn .btn-danger {
-		background: #df4930;
-	}
     .or-seperator {
         margin-top: 20px;
         text-align: center;
@@ -66,8 +49,22 @@
 </head>
 <body>
 <div class="login-form">
-    <form action="/auth/login" method="post">
-        <h2 class="text-center">Sign in</h2>
+    <form action="/auth/contributor" method="post">
+        <h2 class="text-center">Become a Contributor</h2>
+        <div class="clearfix form-group">
+                <div style="float: left;">
+                        <input type="text" class="form-control" style="width: 250px;" name="name" placeholder="Name" required="required">
+                </div>
+                <div style="float: right;">
+                        <input type="date" class="form-control" style="width: 250px;" name="dob" placeholder="dd/mm/yy" required="required">
+                </div>
+        </div> 
+        <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                    <input type="tel" class="form-control" name="mobile" placeholder="Mobile No." required="required">				
+                </div>
+            </div>
         <div class="form-group">
         	<div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
@@ -79,23 +76,26 @@
                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                 <input type="password" class="form-control" name="password" placeholder="Password" required="required">				
             </div>
-        </div>        
+        </div>
+        <div class="clearfix form-group">
+            <div style="float: left;">
+                    <input type="text" class="form-control" style="width: 250px;" name="organisation" placeholder="Organisation" required="required">
+            </div>
+            <div style="float: right;">
+                    <input type="text" class="form-control" style="width: 250px;" name="position" placeholder="Position" required="required">
+            </div>
+        </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-primary login-btn btn-block">Sign in</button>
+                <textarea class="form-control" rows="5" name="information" placeholder="Tell us a reason to become a contributor..."></textarea>
+        </div>        
+        <div class="form-group" style="width: 200px;">
+            <button type="submit" class="btn btn-primary login-btn btn-block">Submit</button>
         </div>
-        <div class="clearfix">
-            <label class="pull-left checkbox-inline"><input type="checkbox"> Remember me</label>
-            <a href="/auth/forgotpass" class="pull-right">Forgot Password?</a>
-        </div>
-		<div class="or-seperator"><i>or</i></div>
-        <p class="text-center">Login with your social media account</p>
-        <div class="text-center social-btn">
-            <a href="/auth/facebook" class="btn btn-primary"><i class="fa fa-facebook"></i>&nbsp; Facebook</a>
-            <a href="/auth/twitter" class="btn btn-info"><i class="fa fa-twitter"></i>&nbsp; Twitter</a>
-			<a href="/auth/google" class="btn btn-danger"><i class="fa fa-google"></i>&nbsp; Google</a>
+        <div class="or-seperator"></div>
+        <div style="margin-top: 15px;">
+                <p class="text-center text-muted">Become a contributor and share your ideas...</p>
         </div>
     </form>
-    <p class="text-center text-muted small">Don't have an account? <a href="/auth/register">Sign up here!</a></p>
 </div>
 </body>
 </html>                            

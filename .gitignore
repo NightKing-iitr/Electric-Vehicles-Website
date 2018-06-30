@@ -1,0 +1,8 @@
+sendgrid.env
+.vscode
+quotes.js
+views/Images/
+getKeywords.js
+node_modules
+data.js
+config/keys.js

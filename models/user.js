@@ -2,22 +2,29 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 var bcrypt = require('bcryptjs');
 var randomstring = require('randomstring');
-//var mailer = require('../config/mailer');
 const sgMail = require('@sendgrid/mail');
 const keys = require('../config/keys');
 
 const SENDGRID_API_KEY = keys.sendgrid.key;
 
-
+//modified schema for contributor & viewers
 const UserSchema = new Schema({
-    username: String,
-    userId: String,
+    username: String,//name
+    userId: String,//social ID
     provider: String,
-    email: String,
+	email: String,
+	phone: String,
+	birthdate: String,
     password: String,
-    thumbnail: String,
+	thumbnail: String,
+	organisation: String,
+	position: String,
+	details: String,
+	usertype: String,
+	savedBlogs: [String],
     secretToken: String,
-    active: Boolean
+	active: Boolean,
+	resetToken: String
 });
 
 const User = mongoose.model('User', UserSchema);
@@ -47,10 +54,10 @@ module.exports.createUser = function(newUser, callback){
 	        <br/><br/>
 	        Have a pleasant day.`
             // Send email
-            sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+            sgMail.setApiKey(SENDGRID_API_KEY);
             const msg = {
                 to: newUser.email,
-                from: 'admin@avbytes.com',
+                from: 'admin@evbytes.com',
                 subject: 'Verify your account.',
                 text: 'This is where fun begins Sendgrid!!!',
                 html: html,
@@ -72,7 +79,7 @@ module.exports.getUserById = function(id, callback){
 module.exports.comparePassword = function(candidatePassword, hash, callback){
 	bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
     	if(err) {
-            console.log('Passwords not match');
+            //console.log('Passwords not match');
             throw err;
         }
     	callback(null, isMatch);
