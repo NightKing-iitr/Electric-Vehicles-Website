@@ -31,6 +31,11 @@ const blogSchema = mongoose.Schema({
     ],
     likes: {
         type: String
+    },
+    verify: {
+        token: String,
+        status: Boolean
+        //this part is for the verification of blog by moderator
     }
 });
 
