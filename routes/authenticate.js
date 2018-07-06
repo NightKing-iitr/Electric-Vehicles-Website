@@ -8,17 +8,16 @@ const mongoose = require('mongoose');
 
 const SENDGRID_API_KEY = keys.sendgrid.key;
 const User = require('../models/user');
-//const passportConfig = require('../config/passport-config');
 
 var db = mongoose.connection;
 
-function ensureAuthenticated(req, res, next){
+/*function ensureAuthenticated(req, res, next){
 	if(req.isAuthenticated()){
 		return next();
 	} else {
 		res.redirect('/auth/login');
 	}
-}
+}*/
 
 //auth login
 router.get('/login', function(req,res){

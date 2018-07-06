@@ -419,12 +419,32 @@ router.get('/verifyPost/:token',  function(req, res){
 router.post('/verifyBlog/:id', verifyObjectId, function(req, res){
     var blogId = req.params.id;
     //console.log(blogId);
-    db.collection('blogs').updateOne({_id: objectId(blogId)},
-    {$set: {verify: {token: '', status: true}}},function(err, doc){
+    db.collection('blogs').findOneAndUpdate({_id: objectId(blogId)},
+    {$set: {verify: {token: '', status: true}}}, {}, function(err, raw){
         if(err){
             //blog not found...
             res.render('pages/success', {msg: "Sorry, blog couldn't be found"});
         }else{
+            var blog = raw.value;//updated raw document
+            var authorId = blog.author.Id;
+            console.log('authorId',authorId);
+            db.collection('users').findOne({_id: objectId(authorId)}, function(err, doc){
+                var authEmail = doc.email;
+                const html = `Hi user,
+                <br/><br/>
+                Your post has been published.
+	            <br/><br/>
+                Have a pleasant day.`
+                sgMail.setApiKey(SENDGRID_API_KEY);
+                const msg = {
+                to: authEmail,//author email ID
+                from: 'admin@evbytes.com',
+                subject: "Blog published notification.",
+                text: 'This is where the fun begins...',
+                html: html,
+                };
+                sgMail.send(msg);
+            });
             res.render('pages/success', {msg: "Blog is verified and submitted..."});
         }
     });
