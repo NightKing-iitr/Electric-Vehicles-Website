@@ -1,0 +1,54 @@
+<!-- views/pages/createblog.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>evBytes</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.9.2/standard/ckeditor.js"></script>
+</head>
+<body class="container-fluid" style="padding: 0px;">
+
+<header>
+    <% include ../partials/header %>
+</header>
+
+<main class="container" style="margin-top: 50px; padding-top: 20px;">
+        <h1>Document editor</h1>
+
+        <!-- This container will become the editable. -->
+        <form id="saveBlog" method="POST" action="/verifyBlog/<%= blogId %>">
+                <textarea name="editor1">
+                    <%- htmldoc %>
+                </textarea>
+        </form>
+        <span><button id="saveButton">Submit</button></span>
+        <span><button id="deleteButton">Delete</button></span>
+        <form id="deleteBlog" method="POST" action="/deleteBlog/<%= blogId %>"> 
+        </form>
+            <script>
+                var form1 = document.getElementById("saveBlog");
+                var form2 = document.getElementById("deleteBlog");
+                document.getElementById("deleteButton").addEventListener("click", function () {
+                    form2.submit();
+                });
+                document.getElementById("saveButton").addEventListener("click", function () {
+                    form1.submit();
+                });
+            </script>
+                <script>
+                    //CKEDITOR.plugins.addExternal( 'abbr', '/myplugins/abbr/', 'plugin.js' );
+                    CKEDITOR.replace( 'editor1' );
+                </script>
+        
+        <script>
+            
+        </script>
+</main>
+<footer>
+    <% include ../partials/footer %>
+</footer>
+
+</body>
+</html>
