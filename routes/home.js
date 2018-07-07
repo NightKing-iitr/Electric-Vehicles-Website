@@ -427,7 +427,7 @@ router.post('/verifyBlog/:id', verifyObjectId, function(req, res){
         }else{
             var blog = raw.value;//updated raw document
             var authorId = blog.author.Id;
-            console.log('authorId',authorId);
+            //console.log('authorId',authorId);
             db.collection('users').findOne({_id: objectId(authorId)}, function(err, doc){
                 var authEmail = doc.email;
                 const html = `Hi user,
@@ -452,13 +452,31 @@ router.post('/verifyBlog/:id', verifyObjectId, function(req, res){
 
 router.post('/deleteBlog/:id', verifyObjectId, function(req, res){
     var blogId = req.params.id;
-    //console.log(blogId);
-    //res.send("Working deleteBlog...");
-    db.collection('blogs').deleteOne({_id: objectId(blogId)}, function(err, doc){
+    db.collection('blogs').findOneAndDelete({_id: objectId(blogId)}, function(err, raw){
         if(err){
             res.render('pages/success',{msg: "Sorry, blog couldn't be found"});
         }
         else{
+            var blog = raw.value;//deleted document
+            var authorId = blog.author.Id;
+            var blogHtml = blog.htmlDoc;
+            db.collection('users').findOne({_id: objectId(authorId)}, function(err, doc){
+                var authEmail = doc.email;
+                const html = `Sorry,
+                <br/><br/>
+                Your post has been deleted.
+	            <br/><br/>
+                Have a pleasant day.`
+                sgMail.setApiKey(SENDGRID_API_KEY);
+                const msg = {
+                to: authEmail,//author email ID
+                from: 'admin@evbytes.com',
+                subject: "Blog deleted notification.",
+                text: 'This is where the fun begins...',
+                html: html,
+                };
+                sgMail.send(msg);
+            });
             res.render('pages/success', {msg: "Blog is deleted and notification email is sent..."});
         }
     });
