@@ -465,6 +465,40 @@ router.post('/deleteBlog/:id', verifyObjectId, function(req, res){
                 const html = `Sorry,
                 <br/><br/>
                 Your post has been deleted.
+                <br/>
+                <head>
+                <style>
+                    img {
+                        max-width:  500px;
+                        margin-left: auto;
+                        margin-right: auto;
+                        display: block;
+                    }
+                    div {
+                        display: block;
+                    }
+                    .articles h2:first-child{
+                        font-size: 40px;
+                        text-decoration: underline;
+                        text-align: center;
+                    }
+                    .articles h2{
+                        font-weight: 600px;
+                        margin-top: 30px;
+                        display: block;
+                    }
+                    .articles p{
+                        font-family: medium-content-serif-font,Georgia,Cambria,"Times New Roman",Times,serif;
+                        font-style: normal;
+                        line-height: 1.58;
+                        letter-spacing: -0.003em;
+                        font-size: 20px;
+                        display: block;
+                        margin-top: 20px;
+                    }
+                </style>
+                </head>
+                <body><div class="articles" style="max-width: 650px; padding: 10px;">${blogHtml}</div><body>
 	            <br/><br/>
                 Have a pleasant day.`
                 sgMail.setApiKey(SENDGRID_API_KEY);
